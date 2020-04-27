@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>test-parent</artifactId>
+        <groupId>ru.gpn.tp</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>kotlin-js</artifactId>
+    <packaging>pom</packaging>
+
+    <name>kotlin-js</name>
+    <modules>
+        <module>kotlin-frontend</module>
+    </modules>
+
+    <properties>
+        <project.output.js-lib>${project.build.outputDirectory}/js/lib</project.output.js-lib>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-maven-plugin</artifactId>
+                    <configuration>
+                        <moduleKind>plain</moduleKind>
+                        <sourceMap>true</sourceMap>
+                        <outputFile>${project.build.outputDirectory}/js/${project.name}.js</outputFile>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>compile</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>js</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>test-compile</id>
+                            <phase>test-compile</phase>
+                            <goals>
+                                <goal>test-js</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>unpack</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>org.jetbrains</groupId>
+                                        <artifactId>kotlin-react</artifactId>
+                                        <outputDirectory>${project.output.js-lib}</outputDirectory>
+                                        <includes>*.js,*.map</includes>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.jetbrains</groupId>
+                                        <artifactId>kotlin-react-dom</artifactId>
+                                        <outputDirectory>${project.output.js-lib}</outputDirectory>
+                                        <includes>*.js,*.map</includes>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.jetbrains.kotlin</groupId>
+                                        <artifactId>kotlin-stdlib-js</artifactId>
+                                        <outputDirectory>${project.output.js-lib}</outputDirectory>
+                                        <includes>*.js,*.map</includes>
+                                    </artifactItem>
+                                </artifactItems>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
