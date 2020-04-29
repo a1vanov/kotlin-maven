@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production"
+    "pjson": ""
   },
   "devDependencies": {
     "webpack": "4.41.2",
@@ -35,6 +36,6 @@
   },
   "workspaces": [
     "packages",
-    "packages_imported"
+    "target/js/kotlin-wrappers"
   ]
 }

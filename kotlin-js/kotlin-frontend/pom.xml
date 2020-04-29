@@ -14,9 +14,76 @@
     <packaging>jar</packaging>
     <name>kotlin-frontend</name>
 
+    <properties>
+        <project.output.kotlin-wrappers>${project.build.directory}/js/kotlin-wrappers</project.output.kotlin-wrappers>
+    </properties>
+
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-messages</id>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <target>
+                                <macrodef name="extract-wrapper">
+                                    <attribute name="wrapper.jar" default="NOT SET"/>
+
+                                    <sequential>
+                                        <local name="wrapper.ver-path"/>
+                                        <local name="wrapper.name-path"/>
+                                        <local name="wrapper.ver"/>
+                                        <local name="wrapper.name"/>
+                                        <local name="wrapper.dest-path"/>
+
+                                        <dirname property="wrapper.ver-path" file="@{wrapper.jar}"/>
+                                        <dirname property="wrapper.name-path" file="${wrapper.ver-path}"/>
+
+                                        <basename property="wrapper.ver" file="${wrapper.ver-path}"/>
+                                        <basename property="wrapper.name" file="${wrapper.name-path}"/>
+                                        <echo message="extract name=${wrapper.name}, ver=${wrapper.ver}"/>
+
+                                        <property name="wrapper.dest-path"
+                                                  value="${project.output.kotlin-wrappers}/${wrapper.name}"/>
+
+                                        <unzip src="@{wrapper.jar}" dest="${wrapper.dest-path}">
+                                            <patternset>
+                                                <include name="*.js"/>
+                                                <include name="*.js.map"/>
+                                                <exclude name="*.meta.js"/>
+                                            </patternset>
+                                        </unzip>
+                                        <echo file="${wrapper.dest-path}/package.json" append="false"><![CDATA[
+{
+  "main": "${wrapper.name}.js",
+  "devDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": [],
+  "name": "${wrapper.name}",
+  "version": "${wrapper.ver}"
+}
+                                    ]]>
+                                        </echo>
+                                    </sequential>
+                                </macrodef>
+
+                                <extract-wrapper wrapper.jar="${org.jetbrains:kotlin-react:jar}"/>
+                                <extract-wrapper wrapper.jar="${org.jetbrains:kotlin-react-dom:jar}"/>
+                                <extract-wrapper wrapper.jar="${org.jetbrains.kotlinx:kotlinx-html-js:jar}"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <!-- To compile mixed code applications Kotlin compiler should be invoked before Java compiler. -->
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -55,16 +122,6 @@
                         <phase>generate-resources</phase>
                     </execution>
 
-                    <!--<execution>-->
-                        <!--<id>npm install</id>-->
-                        <!--<goals>-->
-                            <!--<goal>npm</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<arguments>install react react-dom</arguments>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-
                     <execution>
                         <id>npm install</id>
                         <goals>
@@ -84,23 +141,6 @@
                             <arguments>run dev</arguments>
                         </configuration>
                     </execution>
-                    <!--<execution>-->
-                        <!--<id>npm install</id>-->
-                        <!--<goals>-->
-                            <!--<goal>npm</goal>-->
-                        <!--</goals>-->
-
-                        <!--&lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;-->
-                        <!--<phase>generate-resources</phase>-->
-
-                        <!--<configuration>-->
-                            <!--&lt;!&ndash; optional: The default argument is actually-->
-                            <!--"install", so unless you need to run some other npm command,-->
-                            <!--you can remove this whole <configuration> section.-->
-                            <!--&ndash;&gt;-->
-                            <!--<arguments>install</arguments>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
                 </executions>
             </plugin>
         </plugins>
