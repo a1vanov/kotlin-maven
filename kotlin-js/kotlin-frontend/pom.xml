@@ -12,7 +12,6 @@
 
     <artifactId>kotlin-frontend</artifactId>
     <packaging>jar</packaging>
-
     <name>kotlin-frontend</name>
 
     <build>
@@ -55,6 +54,36 @@
                         <!-- optional: default phase is "generate-resources" -->
                         <phase>generate-resources</phase>
                     </execution>
+
+                    <!--<execution>-->
+                        <!--<id>npm install</id>-->
+                        <!--<goals>-->
+                            <!--<goal>npm</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<arguments>install react react-dom</arguments>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm run build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run dev</arguments>
+                        </configuration>
+                    </execution>
                     <!--<execution>-->
                         <!--<id>npm install</id>-->
                         <!--<goals>-->
@@ -73,9 +102,7 @@
                         <!--</configuration>-->
                     <!--</execution>-->
                 </executions>
-
             </plugin>
-
         </plugins>
     </build>
 

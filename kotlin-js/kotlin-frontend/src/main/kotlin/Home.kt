@@ -17,8 +17,7 @@ fun main(args: Array<String>){
 //    }
 //    RBuilder()
     render(document.getElementById("root")) {
-        h1 {
-            +"Hello, React+Kotlin/JS!"
+        h1 {+"Home Page. Hello, React+Kotlin/JS!"
         }
     }
 

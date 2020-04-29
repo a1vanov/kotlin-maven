@@ -2,3 +2,4 @@
 target
 .idea
 /kotlin-js/kotlin-frontend/node
+node_modules
