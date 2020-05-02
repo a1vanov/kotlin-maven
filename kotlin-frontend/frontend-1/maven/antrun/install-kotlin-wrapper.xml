@@ -50,7 +50,7 @@
             <echo file="${wrapper.dest-path}/install.cmd" append="false"><![CDATA[
 @ECHO OFF
 REM file to avoid wrong output encoding in console. <exec> does not allow to execute more than one command
-CHCP 65001
+CHCP 65001 >nul
 ${npm.path}\npm install ${wrapper.dest-path}
 ]]>
             </echo>

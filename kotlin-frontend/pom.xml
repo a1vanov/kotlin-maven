@@ -28,7 +28,7 @@
                     <groupId>org.jetbrains.kotlin</groupId>
                     <artifactId>kotlin-maven-plugin</artifactId>
                     <configuration>
-                        <moduleKind>plain</moduleKind>
+                        <moduleKind>commonjs</moduleKind>
                         <sourceMap>true</sourceMap>
                         <outputFile>${project.build.directory}/kotlin-compiled/index.js</outputFile>
                     </configuration>

@@ -58,7 +58,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>run dev</arguments>
+                            <arguments>run build</arguments>
                         </configuration>
                     </execution>
                 </executions>
@@ -80,9 +80,15 @@
                                           value="${project.basedir}/maven/antrun/install-kotlin-wrapper.xml"/>
                                 <property name="npm.path" value="${project.build.directory}/node"/>
                                 <property name="wrappers.path" value="${project.build.directory}/kotlin-wrappers"/>
-
+<echoproperties/>
                                 <ant antfile="${install-wrapper.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains.kotlin:kotlin-source-map-loader:jar}"/>
+                                </ant>
+                                <ant antfile="${install-wrapper.xml}">
+                                    <property name="wrapper.jar" value="${org.jetbrains.kotlinx:kotlinx-coroutines-core:jar}"/>
+                                </ant>
+                                <ant antfile="${install-wrapper.xml}">
+                                    <property name="wrapper.jar" value="${org.jetbrains:kotlin-extensions:jar}"/>
                                 </ant>
                                 <ant antfile="${install-wrapper.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-react:jar}"/>
