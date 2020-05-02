@@ -6,7 +6,8 @@
     </target>
 
     <macrodef name="install-kotlin-wrapper">
-        <attribute name="node-modules" default="${node_modules}"/>
+        <attribute name="npm.path" default="${npm.path}"/>
+        <attribute name="wrappers.path" default="${wrappers.path}"/>
         <attribute name="wrapper.jar" default="${wrapper.jar}"/>
 
         <sequential>
@@ -24,7 +25,7 @@
             <echo message="extract name=${wrapper.name}, ver=${wrapper.ver}"/>
 
             <property name="wrapper.dest-path"
-                      value="@{node-modules}/${wrapper.name}"/>
+                      value="@{wrappers.path}/${wrapper.name}"/>
 
             <unzip src="@{wrapper.jar}" dest="${wrapper.dest-path}">
                 <patternset>
@@ -44,9 +45,20 @@
   "name": "${wrapper.name}",
   "version": "${wrapper.ver}"
 }
-                                    ]]>
+]]>
+            </echo>
+            <echo file="${wrapper.dest-path}/install.cmd" append="false"><![CDATA[
+@ECHO OFF
+REM file to avoid wrong output encoding in console. <exec> does not allow to execute more than one command
+CHCP 65001
+${npm.path}\npm install ${wrapper.dest-path}
+]]>
             </echo>
 
+            <exec executable="cmd">
+                <arg value="/c"/>
+                <arg value="${wrapper.dest-path}/install.cmd"/>
+            </exec>
         </sequential>
     </macrodef>
 </project>

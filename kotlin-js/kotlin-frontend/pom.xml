@@ -26,21 +26,19 @@
                         <phase>initialize</phase>
                         <configuration>
                             <target>
-                                <property name="install-wrapper" value="${project.basedir}/maven/antrun/install-kotlin-wrapper.xml"/>
-                                <property name="node_modules" value="${project.build.directory}/kotlin-wrappers"/>
+                                <property name="install-wrapper-script" value="${project.basedir}/maven/antrun/install-kotlin-wrapper.xml"/>
+                                <property name="npm.path" value="${project.build.directory}/node"/>
+                                <property name="wrappers.path" value="${project.build.directory}/kotlin-wrappers"/>
 
-                                <ant antfile="${install-wrapper}">
+                                <ant antfile="${install-wrapper-script}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-react:jar}"/>
                                 </ant>
-                                <ant antfile="${install-wrapper}">
+                                <ant antfile="${install-wrapper-script}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-react-dom:jar}"/>
                                 </ant>
-                                <ant antfile="${install-wrapper}">
+                                <ant antfile="${install-wrapper-script}">
                                     <property name="wrapper.jar" value="${org.jetbrains.kotlinx:kotlinx-html-js:jar}"/>
                                 </ant>
-                                <!--<install-kotlin-wrapper wrapper.jar="${org.jetbrains:kotlin-react:jar}" node_modules="${project.node_modules}"/>-->
-                                <!--<install-kotlin-wrapper wrapper.jar="${org.jetbrains:kotlin-react-dom:jar}" node_modules="${project.node_modules}"/>-->
-                                <!--<install-kotlin-wrapper wrapper.jar="${org.jetbrains.kotlinx:kotlinx-html-js:jar}" node_modules="${project.node_modules}"/>-->
                             </target>
                         </configuration>
                         <goals>
@@ -87,37 +85,6 @@
                         <!-- optional: default phase is "generate-resources" -->
                         <phase>generate-resources</phase>
                     </execution>
-
-                    <execution>
-                        <id>npm install kotlin-react</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install ${project.build.directory}/kotlin-wrappers/kotlin-react</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>npm install kotlin-react-dom</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install ${project.build.directory}/kotlin-wrappers/kotlin-react-dom</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>npm install kotlinx-html-js</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install ${project.build.directory}/kotlin-wrappers/kotlinx-html-js</arguments>
-                        </configuration>
-                    </execution>
-
 
                     <execution>
                         <id>npm install</id>
