@@ -14,10 +14,6 @@
     <packaging>jar</packaging>
     <name>kotlin-frontend</name>
 
-    <properties>
-        <project.output.kotlin-wrappers>${project.build.directory}/js/kotlin-wrappers</project.output.kotlin-wrappers>
-    </properties>
-
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <plugins>
@@ -30,52 +26,21 @@
                         <phase>initialize</phase>
                         <configuration>
                             <target>
-                                <macrodef name="extract-wrapper">
-                                    <attribute name="wrapper.jar" default="NOT SET"/>
+                                <property name="install-wrapper" value="${project.basedir}/maven/antrun/install-kotlin-wrapper.xml"/>
+                                <property name="node_modules" value="${project.build.directory}/kotlin-wrappers"/>
 
-                                    <sequential>
-                                        <local name="wrapper.ver-path"/>
-                                        <local name="wrapper.name-path"/>
-                                        <local name="wrapper.ver"/>
-                                        <local name="wrapper.name"/>
-                                        <local name="wrapper.dest-path"/>
-
-                                        <dirname property="wrapper.ver-path" file="@{wrapper.jar}"/>
-                                        <dirname property="wrapper.name-path" file="${wrapper.ver-path}"/>
-
-                                        <basename property="wrapper.ver" file="${wrapper.ver-path}"/>
-                                        <basename property="wrapper.name" file="${wrapper.name-path}"/>
-                                        <echo message="extract name=${wrapper.name}, ver=${wrapper.ver}"/>
-
-                                        <property name="wrapper.dest-path"
-                                                  value="${project.output.kotlin-wrappers}/${wrapper.name}"/>
-
-                                        <unzip src="@{wrapper.jar}" dest="${wrapper.dest-path}">
-                                            <patternset>
-                                                <include name="*.js"/>
-                                                <include name="*.js.map"/>
-                                                <exclude name="*.meta.js"/>
-                                            </patternset>
-                                        </unzip>
-                                        <echo file="${wrapper.dest-path}/package.json" append="false"><![CDATA[
-{
-  "main": "${wrapper.name}.js",
-  "devDependencies": {},
-  "dependencies": {},
-  "peerDependencies": {},
-  "optionalDependencies": {},
-  "bundledDependencies": [],
-  "name": "${wrapper.name}",
-  "version": "${wrapper.ver}"
-}
-                                    ]]>
-                                        </echo>
-                                    </sequential>
-                                </macrodef>
-
-                                <extract-wrapper wrapper.jar="${org.jetbrains:kotlin-react:jar}"/>
-                                <extract-wrapper wrapper.jar="${org.jetbrains:kotlin-react-dom:jar}"/>
-                                <extract-wrapper wrapper.jar="${org.jetbrains.kotlinx:kotlinx-html-js:jar}"/>
+                                <ant antfile="${install-wrapper}">
+                                    <property name="wrapper.jar" value="${org.jetbrains:kotlin-react:jar}"/>
+                                </ant>
+                                <ant antfile="${install-wrapper}">
+                                    <property name="wrapper.jar" value="${org.jetbrains:kotlin-react-dom:jar}"/>
+                                </ant>
+                                <ant antfile="${install-wrapper}">
+                                    <property name="wrapper.jar" value="${org.jetbrains.kotlinx:kotlinx-html-js:jar}"/>
+                                </ant>
+                                <!--<install-kotlin-wrapper wrapper.jar="${org.jetbrains:kotlin-react:jar}" node_modules="${project.node_modules}"/>-->
+                                <!--<install-kotlin-wrapper wrapper.jar="${org.jetbrains:kotlin-react-dom:jar}" node_modules="${project.node_modules}"/>-->
+                                <!--<install-kotlin-wrapper wrapper.jar="${org.jetbrains.kotlinx:kotlinx-html-js:jar}" node_modules="${project.node_modules}"/>-->
                             </target>
                         </configuration>
                         <goals>
@@ -93,10 +58,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-dependency-plugin</artifactId>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
@@ -109,6 +74,7 @@
 
                     <!-- optional: where to download node and npm from. Defaults to https://nodejs.org/dist/ -->
                     <!--<downloadRoot>http://myproxy.example.org/nodejs/</downloadRoot>-->
+                        <installDirectory>${project.build.directory}</installDirectory>
                 </configuration>
 
                 <executions>
@@ -121,6 +87,37 @@
                         <!-- optional: default phase is "generate-resources" -->
                         <phase>generate-resources</phase>
                     </execution>
+
+                    <execution>
+                        <id>npm install kotlin-react</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install ${project.build.directory}/kotlin-wrappers/kotlin-react</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm install kotlin-react-dom</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install ${project.build.directory}/kotlin-wrappers/kotlin-react-dom</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm install kotlinx-html-js</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install ${project.build.directory}/kotlin-wrappers/kotlinx-html-js</arguments>
+                        </configuration>
+                    </execution>
+
 
                     <execution>
                         <id>npm install</id>
