@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<project name="install-kotlin-wrapper" default="install">
+
+    <target name="install">
+        <install-kotlin-wrapper/>
+    </target>
+
+    <macrodef name="install-kotlin-wrapper">
+        <attribute name="npm.path" default="${npm.path}"/>
+        <attribute name="wrappers.path" default="${wrappers.path}"/>
+        <attribute name="wrapper.jar" default="${wrapper.jar}"/>
+
+        <sequential>
+            <local name="wrapper.ver-path"/>
+            <local name="wrapper.name-path"/>
+            <local name="wrapper.ver"/>
+            <local name="wrapper.name"/>
+            <local name="wrapper.dest-path"/>
+
+            <dirname property="wrapper.ver-path" file="@{wrapper.jar}"/>
+            <dirname property="wrapper.name-path" file="${wrapper.ver-path}"/>
+
+            <basename property="wrapper.ver" file="${wrapper.ver-path}"/>
+            <basename property="wrapper.name" file="${wrapper.name-path}"/>
+            <echo message="extract name=${wrapper.name}, ver=${wrapper.ver}"/>
+
+            <property name="wrapper.dest-path"
+                      value="@{wrappers.path}/${wrapper.name}"/>
+
+            <unzip src="@{wrapper.jar}" dest="${wrapper.dest-path}">
+                <patternset>
+                    <include name="*.js"/>
+                    <include name="*.js.map"/>
+                    <exclude name="*.meta.js"/>
+                </patternset>
+            </unzip>
+            <echo file="${wrapper.dest-path}/package.json" append="false"><![CDATA[
+{
+  "main": "${wrapper.name}.js",
+  "devDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": [],
+  "name": "${wrapper.name}",
+  "version": "${wrapper.ver}"
+}
+]]>
+            </echo>
+            <echo file="${wrapper.dest-path}/install.cmd" append="false"><![CDATA[
+@ECHO OFF
+REM file to avoid wrong output encoding in console. <exec> does not allow to execute more than one command
+CHCP 65001
+${npm.path}\npm install ${wrapper.dest-path}
+]]>
+            </echo>
+
+            <exec executable="cmd">
+                <arg value="/c"/>
+                <arg value="${wrapper.dest-path}/install.cmd"/>
+            </exec>
+        </sequential>
+    </macrodef>
+</project>

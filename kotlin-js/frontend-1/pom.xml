@@ -26,17 +26,18 @@
                         <phase>initialize</phase>
                         <configuration>
                             <target>
-                                <property name="install-wrapper-script" value="${project.basedir}/maven/antrun/install-kotlin-wrapper.xml"/>
+                                <property name="install-wrapper.xml"
+                                          value="${project.basedir}/maven/antrun/install-kotlin-wrapper.xml"/>
                                 <property name="npm.path" value="${project.build.directory}/node"/>
                                 <property name="wrappers.path" value="${project.build.directory}/kotlin-wrappers"/>
 
-                                <ant antfile="${install-wrapper-script}">
+                                <ant antfile="${install-wrapper.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-react:jar}"/>
                                 </ant>
-                                <ant antfile="${install-wrapper-script}">
+                                <ant antfile="${install-wrapper.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-react-dom:jar}"/>
                                 </ant>
-                                <ant antfile="${install-wrapper-script}">
+                                <ant antfile="${install-wrapper.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains.kotlinx:kotlinx-html-js:jar}"/>
                                 </ant>
                             </target>
@@ -56,14 +57,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-dependency-plugin</artifactId>-->
-            <!--</plugin>-->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.9.1</version>
                 <configuration>
                     <nodeVersion>v13.13.0</nodeVersion>
 
@@ -72,7 +68,7 @@
 
                     <!-- optional: where to download node and npm from. Defaults to https://nodejs.org/dist/ -->
                     <!--<downloadRoot>http://myproxy.example.org/nodejs/</downloadRoot>-->
-                        <installDirectory>${project.build.directory}</installDirectory>
+                    <installDirectory>${project.build.directory}</installDirectory>
                 </configuration>
 
                 <executions>

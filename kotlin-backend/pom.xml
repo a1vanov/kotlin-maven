@@ -10,12 +10,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>kotlin-java</artifactId>
+    <artifactId>kotlin-backend</artifactId>
     <packaging>pom</packaging>
 
-    <name>kotlin-java</name>
+    <name>kotlin-backend</name>
     <modules>
-        <module>kotlin-backend</module>
+        <module>backend-1</module>
     </modules>
 
     <build>
