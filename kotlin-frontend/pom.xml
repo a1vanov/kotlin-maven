@@ -10,13 +10,16 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>kotlin-js</artifactId>
+    <artifactId>kotlin-frontend</artifactId>
     <packaging>pom</packaging>
 
     <name>kotlin-frontend</name>
     <modules>
         <module>frontend-1</module>
     </modules>
+    <properties>
+        <project.build.kotlinCompiled>${project.build.directory}/kotlin-compiled/${project.name}.js</project.build.kotlinCompiled>
+    </properties>
 
     <build>
         <pluginManagement>
@@ -27,7 +30,7 @@
                     <configuration>
                         <moduleKind>plain</moduleKind>
                         <sourceMap>true</sourceMap>
-                        <outputFile>${project.build.outputDirectory}/js/packages/${project.name}.js</outputFile>
+                        <outputFile>${project.build.directory}/kotlin-compiled/index.js</outputFile>
                     </configuration>
                     <executions>
                         <execution>

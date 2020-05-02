@@ -4,19 +4,19 @@ const path = require('path');
 
 const PATHS = {
     build: path.join(__dirname, 'target'),
-    output: path.join(__dirname, 'target', 'classes')
+    compiled: path.join(__dirname, 'target', 'kotlin-compiled'),
+    output: path.join(__dirname, 'target', 'classes', 'js')
 };
 //mode: 'production',
 
 module.exports = {
     entry: {
         main: [
-            path.join(PATHS.build, 'js', 'packages', packageJson.name, packageJson.main)
+            path.join(PATHS.compiled, packageJson.main)
         ]
     },
     resolve: {
         modules: [
-            path.join(PATHS.build, 'js', 'packages', packageJson.name),
             'node_modules'
         ]
     },
@@ -33,7 +33,7 @@ module.exports = {
         ]
     },
     output: {
-        path: path.join(PATHS.output, 'js'),
+        path: path.join(PATHS.output),
         filename: packageJson.main
     },
     devtool: 'source-map'
