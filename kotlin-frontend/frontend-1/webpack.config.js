@@ -1,10 +1,13 @@
 const packageJson = require('./package.json');
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 // var webpack = require('webpack');
 
 const PATHS = {
     compiled: path.join(__dirname, 'target', 'kotlin-compiled'),
-    output: path.join(__dirname, 'target', 'classes', 'js')
+    output: path.join(__dirname, 'target', 'classes', 'js'),
+    site: path.join(__dirname, 'target', 'classes')
 };
 
 module.exports = {
@@ -18,7 +21,14 @@ module.exports = {
             'node_modules'
         ]
     },
-    plugins: [],
+    plugins: [
+        new CompressionPlugin({
+            algorithm: "gzip",
+            test: /\.js$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8
+        })
+    ],
     module: {
         rules: [
             {
@@ -30,9 +40,17 @@ module.exports = {
             }
         ]
     },
+    optimization: {
+        minimizer: [new UglifyJsPlugin()],
+    },
     output: {
-        path: path.join(PATHS.output),
+        path: PATHS.output,
         filename: packageJson.main
+    },
+    devServer: {
+        contentBase: PATHS.site,
+        compress: true,
+        port: 9000
     },
     devtool: 'source-map'
 };

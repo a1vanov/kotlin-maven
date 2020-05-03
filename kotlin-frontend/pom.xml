@@ -28,7 +28,7 @@
                     <groupId>org.jetbrains.kotlin</groupId>
                     <artifactId>kotlin-maven-plugin</artifactId>
                     <configuration>
-                        <moduleKind>commonjs</moduleKind>
+                        <moduleKind>umd</moduleKind>
                         <sourceMap>true</sourceMap>
                         <outputFile>${project.build.kotlinCompiled}</outputFile>
                     </configuration>

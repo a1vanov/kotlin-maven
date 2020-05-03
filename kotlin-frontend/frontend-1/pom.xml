@@ -14,6 +14,55 @@
     <packaging>jar</packaging>
     <!--<name>frontend-1</name>-->
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>yarn run build</id>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run dev</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>yarn run build</id>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run build</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <plugins>
@@ -51,17 +100,6 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
-
-                    <execution>
-                        <id>yarn run build</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build</arguments>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
@@ -81,16 +119,18 @@
                                           value="${project.basedir}/maven/antrun/install-kotlin-wrapper.xml"/>
                                 <property name="npm.path" value="${project.build.directory}/node"/>
                                 <property name="wrappers.path" value="${project.build.directory}/packages"/>
-<!--<echoproperties/>-->
+                                <!--<echoproperties/>-->
                                 <ant antfile="${install-wrapper.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains.kotlin:kotlin-stdlib-js:jar}"/>
                                     <property name="wrapper.name" value="kotlin"/>
                                 </ant>
                                 <ant antfile="${install-wrapper.xml}">
-                                    <property name="wrapper.jar" value="${org.jetbrains.kotlin:kotlin-source-map-loader:jar}"/>
+                                    <property name="wrapper.jar"
+                                              value="${org.jetbrains.kotlin:kotlin-source-map-loader:jar}"/>
                                 </ant>
                                 <ant antfile="${install-wrapper.xml}">
-                                    <property name="wrapper.jar" value="${org.jetbrains.kotlinx:kotlinx-coroutines-core-js:jar}"/>
+                                    <property name="wrapper.jar"
+                                              value="${org.jetbrains.kotlinx:kotlinx-coroutines-core-js:jar}"/>
                                     <property name="wrapper.name" value="kotlinx-coroutines-core"/>
                                 </ant>
                                 <ant antfile="${install-wrapper.xml}">
