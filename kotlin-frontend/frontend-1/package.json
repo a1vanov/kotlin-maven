@@ -1,12 +1,9 @@
 {
   "private": true,
+  "main": "frontend-1.js",
   "name": "frontend-1",
   "version": "1.0.0-SNAPSHOT",
   "description": "",
-  "main": "frontend-1.js",
-  "peerDependencies": {},
-  "optionalDependencies": {},
-  "bundledDependencies": [],
   "workspaces": [
     "target/packages/*"
   ],
@@ -31,5 +28,8 @@
     "kotlin",
     "maven",
     "react"
-  ]
+  ],
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
 }
