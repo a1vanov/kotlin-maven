@@ -32,18 +32,18 @@ required props:
 }
 ]]>
             </echo>
-            <echo file="${wrapper.dest-path}/install.cmd" append="false"><![CDATA[
-@ECHO OFF
-REM file to avoid wrong output encoding in console. <exec> does not allow to execute more than one command
-CHCP 65001 >nul
-${npm.path}\npm install ${wrapper.dest-path}
-]]>
-            </echo>
+            <!--<echo file="${wrapper.dest-path}/install.cmd" append="false"><![CDATA[-->
+<!--@ECHO OFF-->
+<!--REM file to avoid wrong output encoding in console. <exec> does not allow to execute more than one command-->
+<!--CHCP 65001 >nul-->
+<!--${npm.path}\npm install ${wrapper.dest-path}-->
+<!--]]>-->
+            <!--</echo>-->
 
-            <exec executable="cmd">
-                <arg value="/c"/>
-                <arg value="${wrapper.dest-path}/install.cmd"/>
-            </exec>
+            <!--<exec executable="cmd">-->
+                <!--<arg value="/c"/>-->
+                <!--<arg value="${wrapper.dest-path}/install.cmd"/>-->
+            <!--</exec>-->
     </target>
 
 
@@ -67,6 +67,6 @@ ${npm.path}\npm install ${wrapper.dest-path}
 
         <property name="wrapper.dest-path" value="${wrappers.path}/${wrapper.name}"/>
 
-        <available file="${wrapper.dest-path}/install.cmd" property="installed"/>
+        <available file="${wrapper.dest-path}/package.json" property="installed"/>
     </target>
 </project>

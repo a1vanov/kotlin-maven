@@ -80,13 +80,18 @@
                                 <property name="install-wrapper.xml"
                                           value="${project.basedir}/maven/antrun/install-kotlin-wrapper.xml"/>
                                 <property name="npm.path" value="${project.build.directory}/node"/>
-                                <property name="wrappers.path" value="${project.build.directory}/kotlin-wrappers"/>
+                                <property name="wrappers.path" value="${project.build.directory}/packages"/>
 <!--<echoproperties/>-->
+                                <ant antfile="${install-wrapper.xml}">
+                                    <property name="wrapper.jar" value="${org.jetbrains.kotlin:kotlin-stdlib-js:jar}"/>
+                                    <property name="wrapper.name" value="kotlin"/>
+                                </ant>
                                 <ant antfile="${install-wrapper.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains.kotlin:kotlin-source-map-loader:jar}"/>
                                 </ant>
                                 <ant antfile="${install-wrapper.xml}">
-                                    <property name="wrapper.jar" value="${org.jetbrains.kotlinx:kotlinx-coroutines-core:jar}"/>
+                                    <property name="wrapper.jar" value="${org.jetbrains.kotlinx:kotlinx-coroutines-core-js:jar}"/>
+                                    <property name="wrapper.name" value="kotlinx-coroutines-core"/>
                                 </ant>
                                 <ant antfile="${install-wrapper.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-extensions:jar}"/>

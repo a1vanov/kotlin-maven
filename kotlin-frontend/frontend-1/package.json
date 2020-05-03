@@ -1,12 +1,15 @@
 {
+  "private": true,
   "name": "frontend-1",
   "version": "1.0.0-SNAPSHOT",
   "description": "",
-  "private": true,
   "main": "index.js",
   "peerDependencies": {},
   "optionalDependencies": {},
   "bundledDependencies": [],
+  "workspaces": [
+    "target/packages/*"
+  ],
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production"
@@ -18,16 +21,15 @@
   },
   "dependencies": {
     "inline-style-prefixer": "*",
-    "kotlinx-coroutines-core": "1.3.5",
-    "kotlin-source-map-loader": "1.3.72",
-    "kotlin-react": "16.13.1-pre.102-kotlin-1.3.72",
-    "kotlin-react-dom": "16.13.1-pre.102-kotlin-1.3.72",
-    "kotlin-extensions": "16.13.1-pre.102-kotlin-1.3.72",
-    "kotlinx-html-js": "0.7.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-player": "*",
     "react-share": "*",
     "styled-components": "*"
-  }
+  },
+  "keywords": [
+    "kotlin",
+    "maven",
+    "react"
+  ]
 }
