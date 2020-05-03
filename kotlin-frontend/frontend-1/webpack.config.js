@@ -3,11 +3,9 @@ const path = require('path');
 // var webpack = require('webpack');
 
 const PATHS = {
-    build: path.join(__dirname, 'target'),
     compiled: path.join(__dirname, 'target', 'kotlin-compiled'),
     output: path.join(__dirname, 'target', 'classes', 'js')
 };
-//mode: 'production',
 
 module.exports = {
     entry: {

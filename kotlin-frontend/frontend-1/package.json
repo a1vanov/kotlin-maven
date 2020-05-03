@@ -3,7 +3,7 @@
   "name": "frontend-1",
   "version": "1.0.0-SNAPSHOT",
   "description": "",
-  "main": "index.js",
+  "main": "frontend-1.js",
   "peerDependencies": {},
   "optionalDependencies": {},
   "bundledDependencies": [],

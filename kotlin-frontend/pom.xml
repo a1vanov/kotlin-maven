@@ -30,7 +30,7 @@
                     <configuration>
                         <moduleKind>commonjs</moduleKind>
                         <sourceMap>true</sourceMap>
-                        <outputFile>${project.build.directory}/kotlin-compiled/index.js</outputFile>
+                        <outputFile>${project.build.kotlinCompiled}</outputFile>
                     </configuration>
                     <executions>
                         <execution>
