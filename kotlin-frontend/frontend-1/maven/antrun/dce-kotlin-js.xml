@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<project name="dce-kotlin-js" default="dce-kotlin-js">
+<!--
+DCE - Dead Code Elimination
+required props:
+ ${wrappers.path}
+ ${dce.path}
+-->
+    <fileset id="packages">
+        <include name="**/*.js"/>
+        <exclude name="**/*.meta.js"/>
+    </fileset>
+    <target name="dce-kotlin-js">
+    </target>
+</project>

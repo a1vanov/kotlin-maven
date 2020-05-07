@@ -18,7 +18,7 @@
         <module>frontend-1</module>
     </modules>
     <properties>
-        <project.build.kotlinCompiled>${project.build.directory}/kotlin-compiled/${project.name}.js</project.build.kotlinCompiled>
+        <project.build.packages>${project.build.directory}/packages</project.build.packages>
     </properties>
 
     <build>
@@ -30,7 +30,7 @@
                     <configuration>
                         <moduleKind>umd</moduleKind>
                         <sourceMap>true</sourceMap>
-                        <outputFile>${project.build.kotlinCompiled}</outputFile>
+                        <outputFile>${project.build.packages}/${project.name}/${project.name}.js</outputFile>
                     </configuration>
                     <executions>
                         <execution>

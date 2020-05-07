@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project name="install-kotlin-wrapper" default="install">
+<project name="unpack-kotlin-wrapper" default="unpack">
 <!--
 required props:
  ${wrapper.jar}
  ${wrappers.path}
  ${npm.path}
 -->
-    <target name="install" depends="install-if-not-installed, message-if-already-installed"/>
+    <target name="unpack" depends="unpack-if-not-unpacked, message-if-already-unpacked"/>
 
 
-    <target name="install-if-not-installed" depends="set-props" unless="installed">
+    <target name="unpack-if-not-unpacked" depends="set-props" unless="unpacked">
             <echo message="extract name=${wrapper.name}, ver=${wrapper.ver}"/>
 
             <unzip src="${wrapper.jar}" dest="${wrapper.dest-path}">
@@ -32,33 +32,15 @@ required props:
 }
 ]]>
             </echo>
-            <!--<echo file="${wrapper.dest-path}/install.cmd" append="false"><![CDATA[-->
-<!--@ECHO OFF-->
-<!--REM file to avoid wrong output encoding in console. <exec> does not allow to execute more than one command-->
-<!--CHCP 65001 >nul-->
-<!--${npm.path}\npm install ${wrapper.dest-path}-->
-<!--]]>-->
-            <!--</echo>-->
-
-            <!--<exec executable="cmd">-->
-                <!--<arg value="/c"/>-->
-                <!--<arg value="${wrapper.dest-path}/install.cmd"/>-->
-            <!--</exec>-->
     </target>
 
 
-    <target name="message-if-already-installed" depends="set-props" if="installed">
-        <echo message="already installed: name=${wrapper.name}, ver=${wrapper.ver}"/>
+    <target name="message-if-already-unpacked" depends="set-props" if="unpacked">
+        <echo message="already unpacked: name=${wrapper.name}, ver=${wrapper.ver}"/>
     </target>
 
 
     <target name="set-props">
-        <!--<local name="wrapper.ver-path"/>-->
-        <!--<local name="wrapper.name-path"/>-->
-        <!--<local name="wrapper.ver"/>-->
-        <!--<local name="wrapper.name"/>-->
-        <!--<local name="wrapper.dest-path"/>-->
-
         <dirname property="wrapper.ver-path" file="${wrapper.jar}"/>
         <dirname property="wrapper.name-path" file="${wrapper.ver-path}"/>
 
@@ -67,6 +49,6 @@ required props:
 
         <property name="wrapper.dest-path" value="${wrappers.path}/${wrapper.name}"/>
 
-        <available file="${wrapper.dest-path}/package.json" property="installed"/>
+        <available file="${wrapper.dest-path}/package.json" property="unpacked"/>
     </target>
 </project>

@@ -216,4 +216,23 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <!--Since there is no official artifact on Central Reporitory-->
+        <dependency>
+            <groupId>net.offecka</groupId>
+            <artifactId>kotlin-preloader</artifactId>
+            <version>1.0.4-1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-compiler</artifactId>
+            <version>1.3.72</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-script-util</artifactId>
+            <version>1.3.72</version>
+        </dependency>
+    </dependencies>
 </project>
