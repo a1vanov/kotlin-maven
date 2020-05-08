@@ -157,23 +157,9 @@
                         </goals>
                         <configuration>
                             <target>
-                                <property name="dce-packages.xml"
-                                          value="${project.basedir}/maven/antrun/dce-packages.xml"/>
-                                <property name="packages.path" value="${project.build.packages}"/>
-                                <property name="dce.path" value="${project.build.directory}/packages-dce"/>
-
-<!--                                <fileset id="packages" dir="${project.build.packages}">-->
-<!--                                    <include name="**/*.js"/>-->
-<!--                                    <exclude name="**/*.meta.js"/>-->
-<!--                                    <exclude name="**/kotlin-source-map-loader.js"/>-->
-<!--                                </fileset>-->
-
-                                <ant antfile="${dce-packages.xml}">
-<!--                                    <fileset id="packages" dir="${project.build.packages}">-->
-<!--                                        <include name="**/*.js"/>-->
-<!--                                        <exclude name="**/*.meta.js"/>-->
-<!--                                        <exclude name="**/kotlin-source-map-loader.js"/>-->
-<!--                                    </fileset>-->
+                                <ant antfile="${project.basedir}/maven/antrun/dce-packages.xml">
+                                    <property name="packages.path" value="${project.build.packages}"/>
+                                    <property name="dce.path" value="${project.build.directory}/packages-dce"/>
                                 </ant>
                             </target>
                         </configuration>

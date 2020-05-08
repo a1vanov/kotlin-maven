@@ -14,7 +14,7 @@
         </fileset>
 
         <pathconvert pathsep=" " property="packages.line" refid="packages"/>
-        <echo message="${packages.line}"/>
+        <echo level="info" message="packages=${packages.line}"/>
 
         <java classname="org.jetbrains.kotlin.preloading.Preloader">
             <arg line="org.jetbrains.kotlin.cli.js.dce.K2JSDce ${packages.line}"/>

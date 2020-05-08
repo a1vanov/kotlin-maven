@@ -9,7 +9,7 @@
 
 
     <target name="build-if-not-built" depends="set-props" unless="already-built">
-        <echo message="build package name=${package.name}, ver=${package.ver}"/>
+        <echo level="info" message="build package name=${package.name}, ver=${package.ver}"/>
 
         <unzip src="${wrapper.jar}" dest="${package.path}">
             <patternset>
@@ -35,7 +35,7 @@
 
 
     <target name="message-if-already-built" depends="set-props" if="already-built">
-        <echo message="package already built: name=${package.name}, ver=${package.ver}"/>
+        <echo level="info" message="package already built: name=${package.name}, ver=${package.ver}"/>
     </target>
 
 
