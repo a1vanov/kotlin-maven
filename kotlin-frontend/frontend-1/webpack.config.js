@@ -18,6 +18,7 @@ module.exports = {
     },
     resolve: {
         modules: [
+            PATHS.compiled,
             'node_modules'
         ]
     },
