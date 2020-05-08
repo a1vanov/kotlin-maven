@@ -5,7 +5,7 @@
   "version": "1.0.0-SNAPSHOT",
   "description": "",
   "workspaces": [
-    "target/packages/*"
+    "target/packages/kotlin-source-map-loader"
   ],
   "scripts": {
     "build-dev": "webpack --mode development",

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="dce-wrapper-packages" default="dce">
+    <!--
+    DCE - Dead Code Elimination
+    required props:
+     ${packages.path}
+     ${dce.path}
+    -->
+    <target name="dce">
+        <fileset id="packages" dir="${packages.path}">
+            <include name="**/*.js"/>
+            <exclude name="**/*.meta.js"/>
+            <exclude name="**/kotlin-source-map-loader.js"/>
+        </fileset>
+
+        <pathconvert pathsep=" " property="packages.line" refid="packages"/>
+        <echo message="${packages.line}"/>
+
+        <java classname="org.jetbrains.kotlin.preloading.Preloader">
+            <arg line="org.jetbrains.kotlin.cli.js.dce.K2JSDce ${packages.line}"/>
+            <arg line="-output-dir ${dce.path}"/>
+        </java>
+    </target>
+</project>

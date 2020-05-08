@@ -84,7 +84,7 @@
                 <executions>
                     <execution>
                         <id>install node and yarn</id>
-                        <phase>initialize</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>install-node-and-yarn</goal>
                         </goals>
@@ -92,7 +92,7 @@
 
                     <execution>
                         <id>yarn install</id>
-                        <phase>process-sources</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>yarn</goal>
                         </goals>
@@ -108,41 +108,40 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unpack kotlin wrappers</id>
-                        <phase>generate-sources</phase>
+                        <id>build kotlin wrapper packages</id>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <target>
-                                <property name="unpack-wrapper.xml"
-                                          value="${project.basedir}/maven/antrun/unpack-kotlin-wrapper.xml"/>
-                                <property name="npm.path" value="${project.build.directory}/node"/>
-                                <property name="wrappers.path" value="${project.build.directory}/packages"/>
-                                <!--<echoproperties/>-->
-                                <ant antfile="${unpack-wrapper.xml}">
+                                <property name="build-wrapper-package.xml"
+                                          value="${project.basedir}/maven/antrun/build-wrapper-package.xml"/>
+                                <property name="packages.path" value="${project.build.packages}"/>
+
+                                <ant antfile="${build-wrapper-package.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains.kotlin:kotlin-stdlib-js:jar}"/>
-                                    <property name="wrapper.name" value="kotlin"/>
+                                    <property name="package.name" value="kotlin"/>
                                 </ant>
-                                <ant antfile="${unpack-wrapper.xml}">
+                                <ant antfile="${build-wrapper-package.xml}">
                                     <property name="wrapper.jar"
                                               value="${org.jetbrains.kotlin:kotlin-source-map-loader:jar}"/>
                                 </ant>
-                                <ant antfile="${unpack-wrapper.xml}">
+                                <ant antfile="${build-wrapper-package.xml}">
                                     <property name="wrapper.jar"
                                               value="${org.jetbrains.kotlinx:kotlinx-coroutines-core-js:jar}"/>
-                                    <property name="wrapper.name" value="kotlinx-coroutines-core"/>
+                                    <property name="package.name" value="kotlinx-coroutines-core"/>
                                 </ant>
-                                <ant antfile="${unpack-wrapper.xml}">
+                                <ant antfile="${build-wrapper-package.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-extensions:jar}"/>
                                 </ant>
-                                <ant antfile="${unpack-wrapper.xml}">
+                                <ant antfile="${build-wrapper-package.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-react:jar}"/>
                                 </ant>
-                                <ant antfile="${unpack-wrapper.xml}">
+                                <ant antfile="${build-wrapper-package.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains:kotlin-react-dom:jar}"/>
                                 </ant>
-                                <ant antfile="${unpack-wrapper.xml}">
+                                <ant antfile="${build-wrapper-package.xml}">
                                     <property name="wrapper.jar" value="${org.jetbrains.kotlinx:kotlinx-html-js:jar}"/>
                                 </ant>
                             </target>
@@ -150,38 +149,53 @@
                     </execution>
 
                     <execution>
-                        <id>dce kotlin js</id>
+                        <id>dce kotlin packages</id>
                         <!--DCE - Dead Code Elimination-->
-                        <phase>prepare-package</phase>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <target>
-                                <property name="dce-kotlin-js.xml"
-                                          value="${project.basedir}/maven/antrun/dce-kotlin-js.xml"/>
+                                <property name="dce-packages.xml"
+                                          value="${project.basedir}/maven/antrun/dce-packages.xml"/>
+                                <property name="packages.path" value="${project.build.packages}"/>
                                 <property name="dce.path" value="${project.build.directory}/packages-dce"/>
 
-                                <fileset id="packages" dir="${project.build.packages}">
-                                    <include name="**/*.js"/>
-                                    <exclude name="**/*.meta.js"/>
-                                </fileset>
+<!--                                <fileset id="packages" dir="${project.build.packages}">-->
+<!--                                    <include name="**/*.js"/>-->
+<!--                                    <exclude name="**/*.meta.js"/>-->
+<!--                                    <exclude name="**/kotlin-source-map-loader.js"/>-->
+<!--                                </fileset>-->
 
-                                <pathconvert pathsep=" " property="packages.line" refid="packages"/>
-                                <echo message="${packages.line} -output-dir ${dce.path}"/>
-
-                                <java classname="org.jetbrains.kotlin.preloading.Preloader">
-                                    <classpath>
-                                        <pathelement location="${net.offecka.kotlin-preloader:jar}"/>
-                                    </classpath>
-                                    <arg value="-noverify"/>
-                                    <arg line="-cp ${org.jetbrains:kotlin-compiler:jar} org.jetbrains.kotlin.cli.js.dce.K2JSDce ${packages.line}"/>
-                                    <arg line="-output-dir ${dce.path}"/>
-                                </java>
+                                <ant antfile="${dce-packages.xml}">
+<!--                                    <fileset id="packages" dir="${project.build.packages}">-->
+<!--                                        <include name="**/*.js"/>-->
+<!--                                        <exclude name="**/*.meta.js"/>-->
+<!--                                        <exclude name="**/kotlin-source-map-loader.js"/>-->
+<!--                                    </fileset>-->
+                                </ant>
                             </target>
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <!-- for DCE compilation -->
+                    <dependency>
+                        <!--
+                        Since there is no official artifact on Central Reporitory
+                        to compile javascript
+                        -->
+                        <groupId>net.offecka</groupId>
+                        <artifactId>kotlin-preloader</artifactId>
+                        <version>1.0.4-1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-compiler</artifactId>
+                        <version>1.3.72</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <!-- To compile mixed code applications Kotlin compiler should be invoked before Java compiler. -->
