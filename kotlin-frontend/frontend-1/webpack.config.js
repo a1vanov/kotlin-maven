@@ -5,7 +5,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 // var webpack = require('webpack');
 
 const PATHS = {
-    compiled: path.join(__dirname, 'target', 'packages-dce'),
+    compiled: path.join(__dirname, 'target', 'packages', packageJson.name),
     output: path.join(__dirname, 'target', 'classes', 'js'),
     site: path.join(__dirname, 'target', 'classes')
 };
@@ -18,7 +18,6 @@ module.exports = {
     },
     resolve: {
         modules: [
-            PATHS.compiled,
             'node_modules'
         ]
     },

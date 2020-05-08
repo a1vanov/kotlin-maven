@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="dce-wrapper-packages" default="dce">
+<project name="dce-packages" default="dce">
     <!--
     DCE - Dead Code Elimination
     required props:
@@ -20,5 +20,10 @@
             <arg line="org.jetbrains.kotlin.cli.js.dce.K2JSDce ${packages.line}"/>
             <arg line="-output-dir ${dce.path}"/>
         </java>
+
+        <copy todir="${packages.path}">
+            <fileset dir="${dce.path}"/>
+            <regexpmapper from="(([^\\\.]+)([^\\]+))$" to="\2\\\2\3"/>
+        </copy>
     </target>
 </project>
